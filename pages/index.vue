@@ -1,5 +1,8 @@
 <template lang="pug">
   .game(ref="gameContainer")
+  .mobile-controls
+    button.control.left(@touchstart="leftHeld = true" @touchend="leftHeld = false" @mousedown="leftHeld = true" @mouseup="leftHeld = false" @mouseleave="leftHeld = false" aria-label="Влево") &#60;
+    button.control.right(@touchstart="rightHeld = true" @touchend="rightHeld = false" @mousedown="rightHeld = true" @mouseup="rightHeld = false" @mouseleave="rightHeld = false" aria-label="Вправо") &#62;
 </template>
 
 <script lang="ts" setup>
@@ -8,6 +11,11 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 const gameContainer = ref<HTMLDivElement | null>(null)
 let phaserGame: Phaser.Game | null = null
+
+const leftHeld = ref(false)
+const rightHeld = ref(false)
+
+let interval: number | null = null
 
 // --- SCENE CLASS ---
 class CarExampleScene extends Phaser.Scene {
@@ -251,6 +259,22 @@ onBeforeUnmount(() => {
     phaserGame = null
   }
 })
+
+// Эмулируем нажатие стрелки, если зажата кнопка на экране
+onMounted(() => {
+  interval = window.setInterval(() => {
+    if (phaserGame && phaserGame.scene) {
+      const scene: any = phaserGame.scene.keys.CarExampleScene
+      if (scene && scene.cursors) {
+        scene.cursors.left.isDown = leftHeld.value
+        scene.cursors.right.isDown = rightHeld.value
+      }
+    }
+  }, 16)
+})
+onBeforeUnmount(() => {
+  if (interval) clearInterval(interval)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -278,5 +302,40 @@ onBeforeUnmount(() => {
   min-width: 100vw;
   overflow-x: hidden;
   overflow-y: hidden;
+}
+
+.mobile-controls {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 35px;
+  display: flex;
+  justify-content: space-between;
+  gap: 36px;
+  pointer-events: none;
+  z-index: 10;
+  margin-inline: 50px;
+}
+.mobile-controls button.control {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid #FF8800;
+  background: rgba(255, 255, 255, 0.9);
+  color: #FF8800;
+  font-size: 2.7rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px 0 rgba(0,0,0,0.08);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background 0.12s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.mobile-controls button.control:active {
+  background: #ffe8cf;
 }
 </style>
