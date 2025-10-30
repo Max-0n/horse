@@ -18,7 +18,7 @@ const rightHeld = ref(false)
 let interval: number | null = null
 
 const GAME_WIDTH = 600
-const aspect = 600/400
+const aspect = 600 / 400
 const MAX_HEIGHT = 300
 const dynamicWidth = ref(Math.round(window.innerWidth))
 const dynamicHeight = ref(Math.min(Math.round(window.innerWidth / aspect), MAX_HEIGHT))
@@ -313,6 +313,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   padding: 0;
 }
+
 .game > canvas {
   width: 100vw !important;
   max-width: 100vw !important;
@@ -325,12 +326,14 @@ onBeforeUnmount(() => {
   top: 50%;
   transform: translateY(-50%);
 }
+
 @media (orientation: portrait) {
   .game > canvas {
     width: 100vw !important;
     height: calc(100vw / 1.5) !important;
   }
 }
+
 @media (orientation: landscape) {
   .game > canvas {
     width: 100vw !important;
@@ -364,9 +367,9 @@ onBeforeUnmount(() => {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  border: 3px solid #FF8800;
+  border: 3px solid #000000;
   background: rgba(255, 255, 255, 0.9);
-  color: #FF8800;
+  color: #000000;
   font-size: 2.7rem;
   font-weight: bold;
   display: flex;
@@ -381,6 +384,6 @@ onBeforeUnmount(() => {
 }
 
 .mobile-controls button.control:active {
-  background: #ffe8cf;
+  background: rgba(109, 109, 109, 0.24);
 }
 </style>
