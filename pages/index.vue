@@ -15,6 +15,7 @@ class CarExampleScene extends Phaser.Scene {
   carBody!: MatterJS.BodyType
   leftWheel!: MatterJS.BodyType
   rightWheel!: MatterJS.BodyType
+  carRoof!: MatterJS.BodyType
 
   // Controls
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys
@@ -96,6 +97,19 @@ class CarExampleScene extends Phaser.Scene {
       },
       label: 'car-body',
     })
+    // Rectangle above carBody (physics only, if needed visually, can set isSensor: true)
+    this.carRoof = this.matter.add.circle(carX, carY - 22, 14, {
+      label: 'car-roof',
+      collisionFilter: {
+        category: 0x0001,
+        mask: 0xffff,
+      },
+    })
+    // Constraint to fix carRoof to carBody
+    this.matter.add.constraint(this.carBody, this.carRoof, 0, 1, {
+      pointA: { x: 30, y: -40 },
+      pointB: { x: 0, y: 5 },
+    })
     // Wheels (physics only) - positioned under the car body
     this.leftWheel = this.matter.add.circle(carX - 32, carY + 13, 12, {
       density: 0.0012,
@@ -118,8 +132,8 @@ class CarExampleScene extends Phaser.Scene {
       label: 'right-wheel',
     })
     // Constraints (axles, springs) - attach to bottom of car body with fixed point
-    this.matter.add.constraint(this.carBody, this.leftWheel, 0, 0.32, { pointA: { x: -32, y: 13 } })
-    this.matter.add.constraint(this.carBody, this.rightWheel, 0, 0.32, { pointA: { x: 32, y: 13 } })
+    this.matter.add.constraint(this.carBody, this.leftWheel, 0, 0.5, { pointA: { x: -32, y: 13 } })
+    this.matter.add.constraint(this.carBody, this.rightWheel, 0, 0.5, { pointA: { x: 32, y: 13 } })
 
     // --- DEBUG GRAPHICS for car ---
     const debugGraphics = this.add.graphics()
