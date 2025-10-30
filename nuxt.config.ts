@@ -120,7 +120,7 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ['./stores/**'],
   },
-  plugins: ['~/plugins/event-bus.ts', '~/plugins/cdn.ts'],
+  // plugins: ['~/plugins/event-bus.ts', '~/plugins/cdn.ts'],
   runtimeConfig: {
     public: {
       apiBase: process.env.API_URL,
