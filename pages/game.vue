@@ -57,7 +57,7 @@ class CarExampleScene extends Phaser.Scene {
   create() {
     // Set up world config
     const { width, height } = this.sys.game.canvas
-    const worldWidth = 2400
+    const worldWidth = 2400 * 20
 
     // ---- GROUND/ROAD ----
     const roadPoints: { x: number; y: number }[] = []
@@ -66,7 +66,9 @@ class CarExampleScene extends Phaser.Scene {
     for (let i = 0; i <= n; i++) {
       const x = i * 10
       const nx = x * 0.012
-      const y = Math.round(height - 80 + Math.sin(nx) * amp + Math.cos(nx * 0.6) * amp * 0.3)
+      const yRaw = Math.round(height - 80 + Math.sin(nx) * amp + Math.cos(nx * 0.6) * amp * 0.3)
+      // Clamp so the road never goes below the bottom of the canvas (leave a small margin for stroke width)
+      const y = Math.min(yRaw, height - 8)
       roadPoints.push({ x, y })
     }
 
