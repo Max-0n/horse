@@ -66,7 +66,6 @@ class CarExampleScene extends Phaser.Scene {
     // загружаем текстуру кузова вместо debug
     this.load.image('horse-body', '/images/horse_body.png')
     this.load.image('horse-head', '/images/horse_head.png')
-    // this.load.image('horse-leg', '/images/left_leg.png')
   }
 
   create() {
@@ -145,10 +144,11 @@ class CarExampleScene extends Phaser.Scene {
         category: 0x0001,
         mask: 0xffff,
       },
+      mass: 1 / 100,
     })
     // Constraint to fix carRoof to carBody
     this.matter.add.constraint(this.carBody, this.carRoof, 0, 1, {
-      pointA: { x: 30, y: -40 },
+      pointA: { x: 50, y: -40 },
       // pointB: { x: 0, y: -5 },
     })
     // Wheels (physics only) - positioned under the car body
@@ -174,6 +174,12 @@ class CarExampleScene extends Phaser.Scene {
     })
 
     // создаём графику для отрисовки левого колеса
+    const ramaGraphics = this.add.graphics()
+    ramaGraphics.fillStyle(0x000000, 1) // 2px, чёрный цвет, непрозрачный
+    ramaGraphics.fillRect(-30, 11, 60, 3)
+    this.matter.add.gameObject(ramaGraphics, this.carBody)
+
+    // создаём графику для отрисовки левого колеса
     const leftWheelGraphics = this.add.graphics()
     leftWheelGraphics.lineStyle(2, 0x000000, 1) // 2px, чёрный цвет, непрозрачный
     leftWheelGraphics.strokeCircle(0, 0, 12)
@@ -190,9 +196,9 @@ class CarExampleScene extends Phaser.Scene {
     this.matter.add.constraint(this.carBody, this.rightWheel, 0, 0.5, { pointA: { x: 33, y: 13 } })
 
     // Графика для кузова — загруженная PNG
-    const bodySprite = this.add.sprite(0, 0, 'horse-body').setOrigin(0.5, 0.5)
+    const bodySprite = this.add.sprite(0, 0, 'horse-body').setOrigin(0.54, 0.7)
     const multiply = 1
-    bodySprite.displayWidth = 140 * multiply
+    bodySprite.displayWidth = 110 * multiply
     bodySprite.displayHeight = 70 * multiply
     const headSprite = this.add.sprite(0, 0, 'horse-head').setOrigin(0.5, 0.5)
     headSprite.displayWidth = 4 * 14
@@ -201,8 +207,8 @@ class CarExampleScene extends Phaser.Scene {
     this.add.existing(bodySprite)
     this.add.existing(headSprite)
     this.events.on('postupdate', () => {
-      bodySprite.x = this.carBody.position.x + 10
-      bodySprite.y = this.carBody.position.y - 10
+      bodySprite.x = this.carBody.position.x
+      bodySprite.y = this.carBody.position.y
       bodySprite.rotation = this.carBody.angle
 
       headSprite.x = this.carRoof.position.x
@@ -332,9 +338,9 @@ onBeforeUnmount(() => {
 // Эмулируем нажатие стрелки, если зажата кнопка на экране
 onMounted(() => {
   interval = window.setInterval(() => {
-    if (phaserGame && phaserGame.scene) {
+    if (phaserGame?.scene) {
       const scene: any = phaserGame.scene.keys.CarExampleScene
-      if (scene && scene.cursors) {
+      if (scene?.cursors) {
         scene.cursors.left.isDown = leftHeld.value
         scene.cursors.right.isDown = rightHeld.value
       }
