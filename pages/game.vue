@@ -172,6 +172,19 @@ class CarExampleScene extends Phaser.Scene {
       },
       label: 'right-wheel',
     })
+
+    // создаём графику для отрисовки левого колеса
+    const leftWheelGraphics = this.add.graphics()
+    leftWheelGraphics.lineStyle(2, 0x000000, 1) // 2px, чёрный цвет, непрозрачный
+    leftWheelGraphics.strokeCircle(0, 0, 12)
+    this.matter.add.gameObject(leftWheelGraphics, this.leftWheel)
+
+    // создаём графику для отрисовки правого колеса
+    const rightWheelGraphics = this.add.graphics()
+    rightWheelGraphics.lineStyle(2, 0x000000, 1) // 2px, чёрный цвет, непрозрачный
+    rightWheelGraphics.strokeCircle(0, 0, 12)
+    this.matter.add.gameObject(rightWheelGraphics, this.rightWheel)
+
     // Constraints (axles, springs) - attach to bottom of car body with fixed point
     this.matter.add.constraint(this.carBody, this.leftWheel, 0, 0.5, { pointA: { x: -33, y: 13 } })
     this.matter.add.constraint(this.carBody, this.rightWheel, 0, 0.5, { pointA: { x: 33, y: 13 } })
