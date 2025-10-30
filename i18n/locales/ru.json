@@ -1,0 +1,125 @@
+{
+  "onboarding": {
+    "welcome": "Привет, {user}!<br/>Баркодия ждет тебя",
+    "scan_codes": "1. Сканируй коды!",
+    "generate_monsters": "2. Создавай существ!",
+    "collect_and_win": "3. Коллекционируй их и побеждай!",
+    "scan_first": "Отсканируй<br>первый товар!"
+  },
+  "minigame": {
+    "select_perk": "Выбери знак монстра",
+    "draw": "Начерти знак",
+    "draw_complete": "Знак начерчен!",
+    "perk": {
+      "star": "Сила",
+      "clock": "Ловкость",
+      "circle": "Интеллект",
+      "thunder": "Выносливость"
+    }
+  },
+  "friends": {
+    "title": "Друзья",
+    "followers": "Подписчики",
+    "followings": "Подписки",
+    "find_friends": "Найди друзей в нашем чате",
+    "chat": "Чат",
+    "watch_all": "Посмотреть всех",
+    "follow": "Подписаться",
+    "unfollow": "Отписаться",
+    "invite": "Пригласить +{reward}"
+  },
+  "leaderboard": {
+    "title": "Лидерборд",
+    "monsters": "Монстры",
+    "players": "Игроки",
+    "empty": "Нет данных"
+  },
+  "monster": {
+    "power": "Сила",
+    "add": "Добавить",
+    "card": "Карточка",
+    "creating": "создаётся...",
+    "post_story": "Запостить историю",
+    "post_story_reward": "Запостить историю +{reward}",
+    "make_video": "Видео",
+    "nft": "NFT",
+    "delete": "Удалить монстра",
+    "claim_reward": "Забрать +{reward}",
+    "next_task_in": "Новая задача через {time}",
+    "task": {
+      "collectLikes": "Поделись, чтобы попросить лайки",
+      "collectLikes_desc": "Чтобы прокачать, получи {progressMax} лайков",
+      "createNewMonsters": "Создай нового монстра",
+      "createNewMonsters_desc": "Чтобы прокачать, создай {progressMax} монстра"
+    }
+  },
+  "camera": {
+    "title": "Камера {idx}",
+    "scanner": "Ищу баркоды...",
+    "tap_to_open": "Тапни, чтобы подключить камеру",
+    "tap_desc": "Нам потребуется доступ для сканирования баркодов.<br>Не волнуйтесь, это безопасно!",
+    "tap_desc_reward": "Каждый новый скан +{reward} спарксов",
+    "my_scans": "Мои продукты",
+    "request": "Предоставить доступ к камере",
+    "search_barcodes": "Ищу баркоды...",
+    "blocked": "<br/>"
+  },
+  "modal": {
+    "balance": "Ваш баланс",
+    "buy_slot": "Купить место?",
+    "buy_cost": "Купить {cost}",
+    "buy_sparks": "Добавить спарки?",
+    "buy_for": "Купить за {price}",
+    "delete_description": "Хотите удалить?",
+    "delete": "Удалить",
+    "your_reward": "Ваша награда",
+    "tap_continue": "Тапни, чтобы продолжить"
+  },
+  "story": {
+    "checkout": "Посмотрите на моего Баркодика!",
+    "make_yours": "Сделай своего"
+  },
+  "product": {
+    "lets_take": "Возьмем.. {name}!",
+    "spawn": "Создать",
+    "spawn_cost": "Создать -{cost}",
+    "reactivate_cost": "Реактивация -{cost}",
+    "share": "Поделиться",
+    "click_to_create": "Кликни, чтобы создать своего первого монстра!"
+  },
+  "error": {
+    "user_not_found": "Пользователь не найден",
+    "product_save_failed": "Ошибка сохранения баркода",
+    "onboarding_failed": "Ошибка онбординга",
+    "fail_get_monster": "Ошибка получения монстра по id: {monsterId}",
+    "fail_delete_monster": "Ошибка удаления понстра по id: {monsterId}",
+    "fail_get_barcode": "Ошибка получения продукта",
+    "fail_upload_image": "Ошибка загрузки изображения истории",
+    "unfollow_failed": "Неудачная отписка. Попробуйте позже",
+    "follow_failed": "Неудачная подписка. Попробуйте позже",
+    "request": "Ошибка запроса",
+    "login_failed": "Ошибка авторизации. Пожалуйста, перезапустите приложение.",
+    "monster_not_found": "Монстр не найден",
+    "share_monster_failed": "Ошибка шаринга монстра",
+    "monster_generation_failed": "Ошибка создании монстра",
+    "not_enough_slots": "Не достаточно слотов",
+    "not_enough_sparks": "Не достаточно спарксов",
+    "slot_purchase_failed": "Ошибка покупки слота",
+    "get_leaderboard": "Ошибка получения лидерборда"
+  },
+  "notify": {
+    "user_unfollowed": "Успешная отписка от пользователя",
+    "user_followed": "Успешная подписка на пользователя",
+    "click_home_onboard": "Нажмите на дом для онбординга",
+    "new_referral": "У вас новы реферал",
+    "monster_generation": "Создание монстра началось",
+    "monster_friend_view": "Вы смотрите монстров ваших друзей",
+    "product_saved": "Код успешно сохранён",
+    "coming_soon": "Скоро...",
+    "delete_product": "Удаление продукта...",
+    "delete_monster": "Удаление монстра..."
+  },
+  "admin": {
+    "language": "Язык"
+  }
+}

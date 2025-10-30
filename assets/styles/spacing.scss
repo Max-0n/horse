@@ -1,0 +1,21 @@
+@mixin marginSpacing($property, $sizes...) {
+  @each $size in $sizes {
+    .#{$property}#{$size} {
+      @if $property == 'mt' {
+        margin-top: #{$size}px;
+      } @else if $property == 'mb' {
+        margin-bottom: #{$size}px;
+      } @else if $property == 'ml' {
+        margin-left: #{$size}px;
+      } @else if $property == 'mr' {
+        margin-right: #{$size}px;
+      }
+    }
+  }
+}
+
+// Использование миксина для нужных размеров
+@include marginSpacing('mt', -3, 10, 12, 24, 32, 40, 64);
+@include marginSpacing('mb', -3, 10, 12, 24, 32, 40, 64);
+@include marginSpacing('ml', 2, 6);
+@include marginSpacing('mr', 6);

@@ -1,0 +1,55 @@
+{
+  "name": "barcodes-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "type-check": "tsc --noEmit",
+    "lint": "biome check",
+    "lint-fix": "biome check --fix",
+    "get-cdn": "bun ../cdn/src/genObjs.ts",
+    "get-l10n": "bun ./genLocales.ts"
+  },
+  "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.6.2",
+    "@pinia/nuxt": "^0.11.2",
+    "@types/node": "^24.5.2",
+    "@vueuse/components": "^13.9.0",
+    "@vueuse/motion": "^3.0.3",
+    "@zxing/library": "^0.21.3",
+    "canvas-confetti": "^1.9.3",
+    "html2canvas": "^1.4.1",
+    "notivue": "^2.4.5",
+    "nuxt": "^4.1.2",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.21",
+    "vue-router": "^4.5.1",
+    "vue-tg": "^0.9.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.2",
+    "@nuxt/eslint": "^1.9.0",
+    "@nuxtjs/google-fonts": "^3.2.0",
+    "@nuxtjs/i18n": "^10.1.0",
+    "@types/canvas-confetti": "^1.9.0",
+    "@vueuse/core": "^13.9.0",
+    "@vueuse/nuxt": "^13.9.0",
+    "csvtojson": "^2.0.10",
+    "eslint": "^9.36.0",
+    "eslint-plugin-vue-pug": "^0.6.2",
+    "sass": "^1.92.1",
+    "sass-loader": "^16.0.5",
+    "typescript": "^5.9.2",
+    "vite-plugin-pug": "^0.4.1",
+    "vite-svg-loader": "^5.1.0",
+    "vue-tsc": "^3.0.7"
+  },
+  "overrides": {
+    "vite": "6.0.11",
+    "@vitejs/plugin-vue": "5.1.4"
+  }
+}

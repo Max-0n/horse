@@ -1,0 +1,121 @@
+:root {
+  --font-rubik: Rubik, sans-serif;
+  --font-inter: Inter, sans-serif;
+
+  --nv-z: 999999; // Notivue – z-index update
+
+  // Default font
+  --font-family: var(--font-rubik);
+
+  --border-radius: 21px;
+
+  --color-black: #000;
+  --color-text-black: #1A1A1A;
+  --color-black-025: rgba(0, 0, 0, 0.25);
+  --color-black-045: rgba(0, 0, 0, 0.45);
+  --color-black-050: rgba(0, 0, 0, 0.5);
+  --color-black-085: rgba(0, 0, 0, 0.85);
+  --color-grey: #3A3F4D;
+  --color-grey2: #333333;
+  --color-grey-light: #A3A3A3;
+  --color-brown: #533B0F;
+  --color-white: #FFF;
+  --color-dirty-white: #E9E9E9;
+  --color-white-03: rgba(255, 255, 255, 0.3);
+  --color-blue: #4F40E2;
+  --color-blue-light: #CADFFF;
+  --color-cyan-light: #60EDFF;
+  --color-cyan-light2: #ACDEC0;
+  --color-cyan-light3: #5BA9AA;
+  --color-cyan-light4: #7BB492;
+  --color-green-green-light: #7FCBB9;
+  --color-yellow: #FFCC00;
+  --color-orange: #FF9500;
+  --color-orange2: #FAB424;
+  --color-orange3: #F78000;
+  --color-red: #A12800;
+  --color-red2: #671A00;
+  --color-red3: #D93600;
+  --color-red4: #F73100;
+
+  --color-beige-dark: #533B0F;
+  --color-beige: #F8EACB;
+  --color-beige-light: #EBFBE7;
+
+  --color-button-secondary-dark: #966662;
+  --color-button-secondary: #D89E60;
+  --color-button-secondary-light: #FFDFDD;
+
+
+  --color-button-blue-dark: #004E74;
+  --color-button-blue: #239BD6;
+  --color-button-blue-light: #A3E1FF;
+
+  // theme
+  --color-green-dark: #004C4D;
+  --color-green: #006466;
+  --color-green-light: #1B7875;
+  --color-green-faded: #5D7272;
+  --color-green-muted: #334646;
+  --color-green-pale: #9DB0B0;
+  --color-green-tint: #ACDEC0;
+
+  --color-icons: var(--color-white);
+  --color-chip: var(--color-blue);
+  --font-color: var(--color-white);
+
+  --color-main-dark: var(--color-green-dark);
+  --color-main: var(--color-green);
+  --color-main-light: var(--color-green-light);
+
+  --color-secondary-dark: var(--color-beige-dark);
+  --color-secondary: var(--color-beige);
+  --color-secondary-light: var(--color-beige-light);
+
+  --color-danger-dark: var(--color-red2);
+  --color-danger: var(--color-red);
+  --color-danger-light: var(--color-red3);
+
+  --background-color: var(--color-main);
+
+  // Buttons
+  --secondary-background: linear-gradient(0deg, var(--color-sand) 0%, var(--color-sand) 100%), var(--color-green);
+
+  // Box shadow
+  --box-shadow: 0 2px 4px 0 var(--color-black-025);
+  --box-shadow2: 0 2px 2px 0 rgba(--color-black-050);
+  --box-shadow-footer: 0 -2px 1px 0 #052F2C inset, 0 2px 1px 0 #41B3AF inset, 0 -4px 4px 0 var(--color-black-025);
+  --box-shadow-button: 0 2px 4px 0 var(--color-black-045), 0 -2px 1px 0 #003A32 inset, 0 2px 1px 0 #00A690 inset;
+  --box-shadow-inset-card: -4px 0 4px 0 var(--color-black-025) inset, 4px 0 4px 0 var(--color-black-025) inset, 0 -4px 4px 0 var(--color-black-025) inset, 0 4px 4px 0 var(--color-black-025) inset;
+  --box-shadow-leaderboard: 0 4px 4px 0 var(--color-black-025) inset, -4px 4px 4px 0 var(--color-black-025);
+  --box-shadow-card-perk: 0 4px 4px 0 var(--color-black-05);
+
+
+  // Footer
+  --footer-bg: var(--color-main-dark);
+  --footer-shadow: var(--color-orange2);
+  --footer-link-icon: var(--color-orange2);
+  --footer-link-bg: var(--color-main-light);
+
+  // Card
+  --card-background: var(--color-main-dark);
+  --card-shadow: var(--box-shadow2);
+  --card-add-shadow: var(--box-shadow-inset-card);
+
+  // Power
+  --power-background: var(--color-orange3);
+  --power-box-shadow: 0 -2px 1px 0 #BA6100 inset, 0 2px 1px 0 #FFB464 inset, 0 2px 4px 0 var(--color-black-045);
+
+  // Likes
+  --likes-bg: var(--color-white-03);
+  --likes-active: var(--color-red4);
+
+  // Dark theme
+  //@media (prefers-color-scheme: dark) {
+  //  --prod-background: #d06872;
+  //  --color-icons: #000;
+  //}
+}
+
+.color-yellow { color: var(--color-yellow); }
+.color-orange { color: var(--color-orange); }

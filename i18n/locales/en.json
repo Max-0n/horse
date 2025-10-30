@@ -1,0 +1,125 @@
+{
+  "onboarding": {
+    "welcome": "Hello, {user}!<br/>Barcodia is waiting for you",
+    "scan_codes": "1. Scan the codes!",
+    "generate_monsters": "2. Hooray, your first monster!",
+    "collect_and_win": "3. Collect them and win!",
+    "scan_first": "Scan<br>your first product!"
+  },
+  "minigame": {
+    "select_perk": "Select monster sign",
+    "draw": "Draw a sign",
+    "draw_complete": "Done!",
+    "perk": {
+      "star": "Strength",
+      "clock": "Agility",
+      "circle": "Intelligence",
+      "thunder": "Stamina"
+    }
+  },
+  "friends": {
+    "title": "Friends",
+    "followers": "Followers",
+    "followings": "Followings",
+    "find_friends": "Find new friends in our chat",
+    "chat": "Сhat",
+    "watch_all": "Watch all",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "invite": "Invite +{reward}"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "monsters": "Monsters",
+    "players": "Players",
+    "empty": "No data"
+  },
+  "monster": {
+    "power": "Power",
+    "add": "Add monster",
+    "card": "Card",
+    "creating": "creating...",
+    "post_story": "Post stories",
+    "post_story_reward": "Post stories +{reward}",
+    "make_video": "Make video",
+    "nft": "NFT",
+    "delete": "Delete monster",
+    "claim_reward": "Claim +{reward}",
+    "next_task_in": "New task in {time}",
+    "task": {
+      "collectLikes": "Share to get likes",
+      "collectLikes_desc": "To level up this creature you need {progressMax} likes",
+      "createNewMonsters": "Create new monsters",
+      "createNewMonsters_desc": "To level up this creature you need {progressMax} new monsters"
+    }
+  },
+  "camera": {
+    "title": "Camera {idx}",
+    "scanner": "Searching for barcodes...",
+    "tap_to_open": "Tap to open camera",
+    "tap_desc": "We will need your permission to scan barcodes.<br>Don't worry it is safe!",
+    "tap_desc_reward": "Each new scan +{reward} sparks",
+    "my_scans": "My Scans",
+    "request": "Request camera access",
+    "search_barcodes": "Searching for barcodes...",
+    "blocked": "Camera access is blocked.<br/>Please allow access to scan."
+  },
+  "modal": {
+    "balance": "Your balance",
+    "buy_slot": "Buy slot?",
+    "buy_cost": "Buy {cost}",
+    "buy_sparks": "Top up sparks?",
+    "buy_for": "Buy for {price}",
+    "delete_description": "Do you want to delete?",
+    "delete": "Delete",
+    "your_reward": "Your reward",
+    "tap_continue": "Tap to continue"
+  },
+  "story": {
+    "checkout": "Look at my<br>Barkodic!",
+    "make_yours": "Make yours"
+  },
+  "product": {
+    "lets_take": "Let's take... {name}!",
+    "spawn": "Spawn",
+    "spawn_cost": "Spawn -{cost}",
+    "reactivate_cost": "Reactivate -{cost}",
+    "share": "Share",
+    "click_to_create": "Click to create your first Monster"
+  },
+  "error": {
+    "user_not_found": "User not found",
+    "product_save_failed": "Save barcode failed",
+    "onboarding_failed": "Onboarded failed",
+    "fail_get_monster": "Fail request getting monster by id: {monsterId}",
+    "fail_delete_monster": "Fail request delete monster by id: {monsterId}",
+    "fail_get_barcode": "Get barcode product failed",
+    "fail_upload_image": "Failed to upload story image",
+    "unfollow_failed": "Unfollowed was unsuccessfully! Please, try again later",
+    "follow_failed": "Followed was unsuccessfully! Please, try again later",
+    "request": "Request error",
+    "login_failed": "Login failed. Please, reload mini app.",
+    "monster_not_found": "Monster not found",
+    "share_monster_failed": "Failed to share monster",
+    "monster_generation_failed": "Monster generation issue",
+    "not_enough_slots": "Not enough slots",
+    "not_enough_sparks": "Not enough sparks",
+    "slot_purchase_failed": "Failed to purchase slots",
+    "get_leaderboard": "Get leaderboard failed"
+  },
+  "notify": {
+    "user_unfollowed": "User unfollowed successfully",
+    "user_followed": "User following successfully",
+    "click_home_onboard": "Click home for onboarding",
+    "new_referral": "You got new referral",
+    "monster_generation": "Monster generation launched.",
+    "monster_friend_view": "You view your friend's monsters",
+    "product_saved": "Code successfully saved",
+    "coming_soon": "Coming soon...",
+    "delete_product": "Deleting product...",
+    "delete_monster": "Deleting monster..."
+  },
+  "admin": {
+    "language": "Language"
+  }
+}
