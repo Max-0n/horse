@@ -8,9 +8,11 @@
 <script lang="ts" setup>
 import Phaser from 'phaser'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { useAppStore } from '~/stores/appStore'
 
 const gameContainer = ref<HTMLDivElement | null>(null)
 let phaserGame: Phaser.Game | null = null
+const appStore = useAppStore()
 
 const leftHeld = ref(false)
 const rightHeld = ref(false)
@@ -179,7 +181,18 @@ class CarExampleScene extends Phaser.Scene {
         const labels = [ pair.bodyA.label, pair.bodyB.label ]
         if (labels.includes('car-roof') && labels.includes('road-segment')) {
           this.gameOver = true
-          alert('Крыша столкнулась с дорогой!')
+          // Stop bg music and play fail/gameover sounds
+          appStore.stopMusic()
+          appStore.playSfxHorseFail()
+          appStore.playSfxGameOver()
+
+          setTimeout(() => {
+            const shouldRestart = confirm('Лошадь столкнулась с дорогой! Перезапустить игру?')
+            if (shouldRestart) {
+              window.location.reload()
+            }
+          }, 100)
+
           this.matter.world.pause()
           if (this.input.keyboard) {
             this.input.keyboard.enabled = false
@@ -248,6 +261,7 @@ class CarExampleScene extends Phaser.Scene {
 
 onMounted(() => {
   recalcSize()
+  appStore.startMusic()
   if (gameContainer.value) {
     phaserGame = new Phaser.Game({
       type: Phaser.AUTO,
@@ -274,6 +288,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => {
   window.removeEventListener('resize', recalcSize)
+  appStore.stopMusic()
   if (phaserGame) {
     phaserGame.destroy(true)
     phaserGame = null
