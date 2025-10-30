@@ -3,6 +3,15 @@
   .mobile-controls
     button.control.left(@touchstart="leftHeld = true" @touchend="leftHeld = false" @mousedown="leftHeld = true" @mouseup="leftHeld = false" @mouseleave="leftHeld = false" aria-label="Влево") &#60;
     button.control.right(@touchstart="rightHeld = true" @touchend="rightHeld = false" @mousedown="rightHeld = true" @mouseup="rightHeld = false" @mouseleave="rightHeld = false" aria-label="Вправо") &#62;
+  .modal-overlay(v-if="showGameOver")
+    .modal-box
+      .score-container
+        h3.modal-score 0
+        p.modal-score-text Score
+      .modal-title Game Over
+      .modal-buttons
+        button(@click="restartGame") Restart
+        NuxtLink(to="/") Home
 </template>
 
 <script lang="ts" setup>
@@ -16,6 +25,10 @@ const appStore = useAppStore()
 
 const leftHeld = ref(false)
 const rightHeld = ref(false)
+const showGameOver = ref(false)
+function restartGame() {
+  window.location.reload()
+}
 
 let interval: number | null = null
 
@@ -185,14 +198,9 @@ class CarExampleScene extends Phaser.Scene {
           appStore.stopMusic()
           appStore.playSfxHorseFail()
           appStore.playSfxGameOver()
-
           setTimeout(() => {
-            const shouldRestart = confirm('Лошадь столкнулась с дорогой! Перезапустить игру?')
-            if (shouldRestart) {
-              window.location.reload()
-            }
+            showGameOver.value = true
           }, 100)
-
           this.matter.world.pause()
           if (this.input.keyboard) {
             this.input.keyboard.enabled = false
@@ -400,5 +408,74 @@ onBeforeUnmount(() => {
 
 .mobile-controls button.control:active {
   background: rgba(109, 109, 109, 0.24);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(40, 40, 40, 0.4);
+  backdrop-filter: blur(4px);
+}
+.modal-box {
+  background: #fff;
+  border-radius: 17px;
+  box-shadow: 0 6px 32px 4px rgba(0,0,0,0.13);
+  min-width: 280px;
+  max-width: 95vw;
+  padding: 32px 20px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 23px;
+}
+.modal-score {
+  font-size: 48px;
+  font-weight: 600;
+  color: #181818;
+  text-align: center;
+}
+.modal-title {
+  font-size: 1.27rem;
+  font-weight: 600;
+  color: #181818;
+  text-align: center;
+  text-transform: uppercase;
+}
+.modal-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+.modal-box button {
+  padding: 11px 23px;
+  border-radius: 40px;
+  border: none;
+  font-weight: 600;
+  background: #e5ecff;
+  color: #204faa;
+  font-size: 1.07rem;
+  cursor: pointer;
+  transition: background 0.14s;
+}
+.modal-box button:hover {
+  background: #c3d6ff;
+}
+.modal-box a {
+  display: inline-block;
+  text-decoration: none;
+  padding: 11px 23px;
+  border-radius: 40px;
+  font-weight: 600;
+  background: #fee5e5;
+  color: #de2a18;
+  font-size: 1.05rem;
+  transition: background 0.14s;
+}
+.modal-box a:hover {
+  background: #ffd6d6;
 }
 </style>
