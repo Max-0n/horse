@@ -27,7 +27,8 @@ class CarExampleScene extends Phaser.Scene {
   }
 
   preload() {
-    // assets could be loaded here
+    // загружаем текстуру кузова вместо debug
+    this.load.image('horse-body', '/images/horse_body.png') // путь подправь по своему имени png
   }
 
   create() {
@@ -36,7 +37,6 @@ class CarExampleScene extends Phaser.Scene {
     const worldWidth = 2400
 
     // ---- GROUND/ROAD ----
-    // Prepare points along a curve for the road
     const roadPoints: { x: number; y: number }[] = []
     const n = Math.floor(worldWidth / 10)
     const amp = 78
@@ -47,10 +47,10 @@ class CarExampleScene extends Phaser.Scene {
       roadPoints.push({ x, y })
     }
 
-    // Road visual: 2px green centerline
+    // Оранжевая линия трассы
     const g = this.add.graphics()
     g.clear()
-    g.lineStyle(2, 0x19f425)
+    g.lineStyle(8, 0xFF8800, 1)
     g.beginPath()
     g.moveTo(roadPoints[0]?.x ?? 0, roadPoints[0]?.y ?? 0)
     for (let i = 1; i < roadPoints.length; ++i) {
@@ -62,12 +62,12 @@ class CarExampleScene extends Phaser.Scene {
     // Ground body (series of rectangles for each segment - robust for wheels)
     for (let i = 1; i < roadPoints.length; i++) {
       const a = roadPoints[i - 1] ?? { x: 0, y: 0 },
-        b = roadPoints[i] ?? { x: 0, y: 0 }
+          b = roadPoints[i] ?? { x: 0, y: 0 }
       const segmentLength = Math.hypot((b.x ?? 0) - (a.x ?? 0), (b.y ?? 0) - (a.y ?? 0))
       const angle = Math.atan2((b.y ?? 0) - (a.y ?? 0), (b.x ?? 0) - (a.x ?? 0))
       // Offset to center of segment
       const mx = ((a.x ?? 0) + (b.x ?? 0)) / 2,
-        my = ((a.y ?? 0) + (b.y ?? 0)) / 2
+          my = ((a.y ?? 0) + (b.y ?? 0)) / 2
       this.matter.add.rectangle(mx, my, segmentLength, 14, {
         isStatic: true,
         angle,
@@ -78,13 +78,13 @@ class CarExampleScene extends Phaser.Scene {
           mask: 0xffff,
         },
         label: 'road-segment',
+        render: { visible: false },
       })
     }
 
     // ---- CAR ----
     const carX = 160
     const carY = height - 140
-    // Chassis rectangle (physics only)
     this.carBody = this.matter.add.rectangle(carX, carY, 82, 26, {
       chamfer: { radius: 6 },
       density: 0.001,
@@ -136,23 +136,19 @@ class CarExampleScene extends Phaser.Scene {
     this.matter.add.constraint(this.carBody, this.leftWheel, 0, 0.5, { pointA: { x: -32, y: 13 } })
     this.matter.add.constraint(this.carBody, this.rightWheel, 0, 0.5, { pointA: { x: 32, y: 13 } })
 
-    // --- DEBUG GRAPHICS for car ---
-    const debugGraphics = this.add.graphics()
-    debugGraphics.fillStyle(0xffffff, 1)
-    debugGraphics.lineStyle(2, 0x222222, 0.9)
-    // car body
-    debugGraphics.strokeRoundedRect(-41, -13, 82, 26, 6)
-    // left wheel - positioned under car body
-    debugGraphics.strokeCircle(-32, 13, 12)
-    // right wheel - positioned under car body
-    debugGraphics.strokeCircle(32, 13, 12)
-    // Make the debug graphics follow the car body
-    this.add.existing(debugGraphics)
+    // Графика для кузова — загруженная PNG
+    const bodySprite = this.add.sprite(0, 0, 'horse-body').setOrigin(0.5, 0.5)
+    bodySprite.displayWidth = 82
+    bodySprite.displayHeight = 46 // немного больше, чтобы занять место кузова
+    // слежение за физическим телом
+    this.add.existing(bodySprite)
     this.events.on('postupdate', () => {
-      debugGraphics.x = this.carBody.position.x
-      debugGraphics.y = this.carBody.position.y
-      debugGraphics.rotation = this.carBody.angle
+      bodySprite.x = this.carBody.position.x
+      bodySprite.y = this.carBody.position.y
+      bodySprite.rotation = this.carBody.angle
     })
+
+    // Дебажных прямоугольников и колес больше не рисуем!
 
     // --- ALARM ON CARROOF/ROAD COLLISION ---
     this.matter.world.on('collisionstart', (event: any) => {
@@ -236,7 +232,7 @@ onMounted(() => {
       parent: gameContainer.value,
       width: 600,
       height: 400,
-      backgroundColor: '#4cc6ef',
+      backgroundColor: '#ffffff',
       physics: {
         default: 'matter',
         matter: {
@@ -259,16 +255,28 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .game {
-  width: 100%;
+  width: 600px;
   height: 400px;
-  max-width: 800px;
-  margin: 40px auto 0 auto;
-  background: #242c3a;
-  border-radius: 21px;
-  box-shadow: 0 2px 24px 0 rgba(0,0,0,0.35);
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+:global(body) {
+  background: #fff !important;
+  margin: 0 !important;
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 </style>

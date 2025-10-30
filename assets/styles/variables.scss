@@ -76,7 +76,7 @@
   --color-danger: var(--color-red);
   --color-danger-light: var(--color-red3);
 
-  --background-color: var(--color-main);
+  --background-color: var(--color-white);
 
   // Buttons
   --secondary-background: linear-gradient(0deg, var(--color-sand) 0%, var(--color-sand) 100%), var(--color-green);
@@ -117,5 +117,10 @@
   //}
 }
 
-.color-yellow { color: var(--color-yellow); }
-.color-orange { color: var(--color-orange); }
+.color-yellow {
+  color: var(--color-yellow);
+}
+
+.color-orange {
+  color: var(--color-orange);
+}
