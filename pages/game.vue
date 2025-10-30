@@ -64,7 +64,9 @@ class CarExampleScene extends Phaser.Scene {
 
   preload() {
     // загружаем текстуру кузова вместо debug
-    this.load.image('horse-body', '/images/horse_body.png') // путь подправь по своему имени png
+    this.load.image('horse-body', '/images/horse_body.png')
+    this.load.image('horse-head', '/images/horse_head.png')
+    this.load.image('horse-leg', '/images/left_leg.png')
   }
 
   create() {
@@ -147,7 +149,7 @@ class CarExampleScene extends Phaser.Scene {
     // Constraint to fix carRoof to carBody
     this.matter.add.constraint(this.carBody, this.carRoof, 0, 1, {
       pointA: { x: 30, y: -40 },
-      pointB: { x: 0, y: 5 },
+      // pointB: { x: 0, y: -5 },
     })
     // Wheels (physics only) - positioned under the car body
     this.leftWheel = this.matter.add.circle(carX - 32, carY + 13, 12, {
@@ -178,12 +180,36 @@ class CarExampleScene extends Phaser.Scene {
     const bodySprite = this.add.sprite(0, 0, 'horse-body').setOrigin(0.5, 0.5)
     bodySprite.displayWidth = 82
     bodySprite.displayHeight = 46 // немного больше, чтобы занять место кузова
+    const headSprite = this.add.sprite(0, 0, 'horse-head').setOrigin(0.5, 0.5)
+    headSprite.displayWidth = 4 * 14
+    headSprite.displayHeight = 3 * 14
+    const leftLegSprite = this.add.sprite(0, 0, 'horse-leg').setOrigin(0.5, 0.5)
+    leftLegSprite.displayWidth = 2 * 14
+    leftLegSprite.displayHeight = 3 * 14
+    const rightLegSprite = this.add.sprite(0, 0, 'horse-leg').setOrigin(0.5, 0.5)
+    rightLegSprite.displayWidth = 2 * 14
+    rightLegSprite.displayHeight = 3 * 14
     // слежение за физическим телом
     this.add.existing(bodySprite)
+    this.add.existing(headSprite)
+    this.add.existing(leftLegSprite)
+    this.add.existing(rightLegSprite)
     this.events.on('postupdate', () => {
-      bodySprite.x = this.carBody.position.x
-      bodySprite.y = this.carBody.position.y
+      bodySprite.x = this.carBody.position.x + 10
+      bodySprite.y = this.carBody.position.y - 15
       bodySprite.rotation = this.carBody.angle
+
+      headSprite.x = this.carRoof.position.x
+      headSprite.y = this.carRoof.position.y
+      headSprite.rotation = this.carRoof.angle
+
+      leftLegSprite.x = this.carBody.position.x - 17
+      leftLegSprite.y = this.carBody.position.y + 10
+      leftLegSprite.rotation = this.carBody.angle
+
+      rightLegSprite.x = this.carBody.position.x + 32
+      rightLegSprite.y = this.carBody.position.y + 13
+      rightLegSprite.rotation = this.carBody.angle
     })
 
     // Дебажных прямоугольников и колес больше не рисуем!
