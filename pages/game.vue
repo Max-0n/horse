@@ -203,13 +203,13 @@ class CarExampleScene extends Phaser.Scene {
       headSprite.y = this.carRoof.position.y
       headSprite.rotation = this.carRoof.angle
 
-      leftLegSprite.x = this.carBody.position.x - 17
+      leftLegSprite.x = this.carBody.position.x - 10
       leftLegSprite.y = this.carBody.position.y + 10
       leftLegSprite.rotation = this.carBody.angle
 
-      rightLegSprite.x = this.carBody.position.x + 32
-      rightLegSprite.y = this.carBody.position.y + 13
-      rightLegSprite.rotation = this.carBody.angle
+      rightLegSprite.x = this.carBody.position.x + 17
+      rightLegSprite.y = this.carBody.position.y + 10
+      rightLegSprite.rotation = this.carBody.angle - 0.5
     })
 
     // Дебажных прямоугольников и колес больше не рисуем!
