@@ -9,6 +9,8 @@ ansible/config/id_rsa.pub
 .yarn/
 
 # Dependencies
+.idea/
+.nuxt/
 node_modules/
 
 # VSCode
