@@ -66,7 +66,7 @@ class CarExampleScene extends Phaser.Scene {
     // загружаем текстуру кузова вместо debug
     this.load.image('horse-body', '/images/horse_body.png')
     this.load.image('horse-head', '/images/horse_head.png')
-    this.load.image('horse-leg', '/images/left_leg.png')
+    // this.load.image('horse-leg', '/images/left_leg.png')
   }
 
   create() {
@@ -90,7 +90,7 @@ class CarExampleScene extends Phaser.Scene {
     // Оранжевая линия трассы
     const g = this.add.graphics()
     g.clear()
-    g.lineStyle(8, 0xFF8800, 1)
+    g.lineStyle(8, 0xff8800, 1)
     g.beginPath()
     g.moveTo(roadPoints[0]?.x ?? 0, roadPoints[0]?.y ?? 0)
     for (let i = 1; i < roadPoints.length; ++i) {
@@ -102,12 +102,12 @@ class CarExampleScene extends Phaser.Scene {
     // Ground body (series of rectangles for each segment - robust for wheels)
     for (let i = 1; i < roadPoints.length; i++) {
       const a = roadPoints[i - 1] ?? { x: 0, y: 0 },
-          b = roadPoints[i] ?? { x: 0, y: 0 }
+        b = roadPoints[i] ?? { x: 0, y: 0 }
       const segmentLength = Math.hypot((b.x ?? 0) - (a.x ?? 0), (b.y ?? 0) - (a.y ?? 0))
       const angle = Math.atan2((b.y ?? 0) - (a.y ?? 0), (b.x ?? 0) - (a.x ?? 0))
       // Offset to center of segment
       const mx = ((a.x ?? 0) + (b.x ?? 0)) / 2,
-          my = ((a.y ?? 0) + (b.y ?? 0)) / 2
+        my = ((a.y ?? 0) + (b.y ?? 0)) / 2
       this.matter.add.rectangle(mx, my, segmentLength, 14, {
         isStatic: true,
         angle,
@@ -152,7 +152,7 @@ class CarExampleScene extends Phaser.Scene {
       // pointB: { x: 0, y: -5 },
     })
     // Wheels (physics only) - positioned under the car body
-    this.leftWheel = this.matter.add.circle(carX - 32, carY + 13, 12, {
+    this.leftWheel = this.matter.add.circle(carX - 33, carY + 13, 12, {
       density: 0.0012,
       friction: 3.5,
       restitution: 0.18,
@@ -162,7 +162,7 @@ class CarExampleScene extends Phaser.Scene {
       },
       label: 'left-wheel',
     })
-    this.rightWheel = this.matter.add.circle(carX + 32, carY + 13, 12, {
+    this.rightWheel = this.matter.add.circle(carX + 33, carY + 13, 12, {
       density: 0.0012,
       friction: 3.5,
       restitution: 0.18,
@@ -173,43 +173,28 @@ class CarExampleScene extends Phaser.Scene {
       label: 'right-wheel',
     })
     // Constraints (axles, springs) - attach to bottom of car body with fixed point
-    this.matter.add.constraint(this.carBody, this.leftWheel, 0, 0.5, { pointA: { x: -32, y: 13 } })
-    this.matter.add.constraint(this.carBody, this.rightWheel, 0, 0.5, { pointA: { x: 32, y: 13 } })
+    this.matter.add.constraint(this.carBody, this.leftWheel, 0, 0.5, { pointA: { x: -33, y: 13 } })
+    this.matter.add.constraint(this.carBody, this.rightWheel, 0, 0.5, { pointA: { x: 33, y: 13 } })
 
     // Графика для кузова — загруженная PNG
     const bodySprite = this.add.sprite(0, 0, 'horse-body').setOrigin(0.5, 0.5)
-    bodySprite.displayWidth = 82
-    bodySprite.displayHeight = 46 // немного больше, чтобы занять место кузова
+    const multiply = 1
+    bodySprite.displayWidth = 140 * multiply
+    bodySprite.displayHeight = 70 * multiply
     const headSprite = this.add.sprite(0, 0, 'horse-head').setOrigin(0.5, 0.5)
     headSprite.displayWidth = 4 * 14
     headSprite.displayHeight = 3 * 14
-    const leftLegSprite = this.add.sprite(0, 0, 'horse-leg').setOrigin(0.5, 0.5)
-    leftLegSprite.displayWidth = 2 * 14
-    leftLegSprite.displayHeight = 3 * 14
-    const rightLegSprite = this.add.sprite(0, 0, 'horse-leg').setOrigin(0.5, 0.5)
-    rightLegSprite.displayWidth = 2 * 14
-    rightLegSprite.displayHeight = 3 * 14
     // слежение за физическим телом
     this.add.existing(bodySprite)
     this.add.existing(headSprite)
-    this.add.existing(leftLegSprite)
-    this.add.existing(rightLegSprite)
     this.events.on('postupdate', () => {
       bodySprite.x = this.carBody.position.x + 10
-      bodySprite.y = this.carBody.position.y - 15
+      bodySprite.y = this.carBody.position.y - 10
       bodySprite.rotation = this.carBody.angle
 
       headSprite.x = this.carRoof.position.x
       headSprite.y = this.carRoof.position.y
       headSprite.rotation = this.carRoof.angle
-
-      leftLegSprite.x = this.carBody.position.x - 10
-      leftLegSprite.y = this.carBody.position.y + 10
-      leftLegSprite.rotation = this.carBody.angle
-
-      rightLegSprite.x = this.carBody.position.x + 17
-      rightLegSprite.y = this.carBody.position.y + 10
-      rightLegSprite.rotation = this.carBody.angle - 0.5
     })
 
     // Дебажных прямоугольников и колес больше не рисуем!
@@ -219,7 +204,7 @@ class CarExampleScene extends Phaser.Scene {
       if (this.gameOver) return
       const pairs = event.pairs
       for (const pair of pairs) {
-        const labels = [ pair.bodyA.label, pair.bodyB.label ]
+        const labels = [pair.bodyA.label, pair.bodyB.label]
         if (labels.includes('car-roof') && labels.includes('road-segment')) {
           this.gameOver = true
           // Stop bg music and play fail/gameover sounds
@@ -260,31 +245,31 @@ class CarExampleScene extends Phaser.Scene {
     const angleBounds = 1.5
     if (this.cursors.right.isDown) {
       this.matter.body.setAngularVelocity(
-          this.leftWheel,
-          Phaser.Math.Clamp(this.leftWheel.angularVelocity + torque, -moveBounds, moveBounds),
+        this.leftWheel,
+        Phaser.Math.Clamp(this.leftWheel.angularVelocity + torque, -moveBounds, moveBounds)
       )
       this.matter.body.setAngularVelocity(
-          this.rightWheel,
-          Phaser.Math.Clamp(this.rightWheel.angularVelocity + torque, -moveBounds, moveBounds),
+        this.rightWheel,
+        Phaser.Math.Clamp(this.rightWheel.angularVelocity + torque, -moveBounds, moveBounds)
       )
       // Добавляем небольшой импульс наклона влево К ТЕКУЩЕМУ зн.
       this.matter.body.setAngularVelocity(
-          this.carBody,
-          Phaser.Math.Clamp(this.carBody.angularVelocity - angleTorque, -angleBounds, angleBounds),
+        this.carBody,
+        Phaser.Math.Clamp(this.carBody.angularVelocity - angleTorque, -angleBounds, angleBounds)
       )
     } else if (this.cursors.left.isDown) {
       this.matter.body.setAngularVelocity(
-          this.leftWheel,
-          Phaser.Math.Clamp(this.leftWheel.angularVelocity - torque, -moveBounds, moveBounds),
+        this.leftWheel,
+        Phaser.Math.Clamp(this.leftWheel.angularVelocity - torque, -moveBounds, moveBounds)
       )
       this.matter.body.setAngularVelocity(
-          this.rightWheel,
-          Phaser.Math.Clamp(this.rightWheel.angularVelocity - torque, -moveBounds, moveBounds),
+        this.rightWheel,
+        Phaser.Math.Clamp(this.rightWheel.angularVelocity - torque, -moveBounds, moveBounds)
       )
       // Добавляем небольшой импульс наклона вправо К ТЕКУЩЕМУ зн.
       this.matter.body.setAngularVelocity(
-          this.carBody,
-          Phaser.Math.Clamp(this.carBody.angularVelocity + angleTorque, -angleBounds, angleBounds),
+        this.carBody,
+        Phaser.Math.Clamp(this.carBody.angularVelocity + angleTorque, -angleBounds, angleBounds)
       )
     }
 
@@ -309,7 +294,7 @@ onMounted(() => {
         default: 'matter',
         matter: {
           gravity: { x: 0, y: 1.15 },
-          debug: true,
+          debug: false,
         },
       },
       scene: CarExampleScene,
