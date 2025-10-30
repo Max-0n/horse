@@ -62,7 +62,6 @@ export const useAppStore = defineStore('appStore', () => {
     }
   }
 
-
   function playSfxGameOver(): void {
     // Resolve asset URL; each SFX is a one-shot element
     try {
@@ -75,7 +74,6 @@ export const useAppStore = defineStore('appStore', () => {
       // Ignore if asset missing
     }
   }
-
 
   return {
     startMusic,
