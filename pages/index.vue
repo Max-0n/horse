@@ -15,6 +15,8 @@ class CarExampleScene extends Phaser.Scene {
   carBody!: MatterJS.BodyType
   leftWheel!: MatterJS.BodyType
   rightWheel!: MatterJS.BodyType
+  carRoof!: MatterJS.BodyType
+  gameOver = false
 
   // Controls
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys
@@ -96,6 +98,19 @@ class CarExampleScene extends Phaser.Scene {
       },
       label: 'car-body',
     })
+    // Rectangle above carBody (physics only, if needed visually, can set isSensor: true)
+    this.carRoof = this.matter.add.circle(carX, carY - 22, 14, {
+      label: 'car-roof',
+      collisionFilter: {
+        category: 0x0001,
+        mask: 0xffff,
+      },
+    })
+    // Constraint to fix carRoof to carBody
+    this.matter.add.constraint(this.carBody, this.carRoof, 0, 1, {
+      pointA: { x: 30, y: -40 },
+      pointB: { x: 0, y: 5 },
+    })
     // Wheels (physics only) - positioned under the car body
     this.leftWheel = this.matter.add.circle(carX - 32, carY + 13, 12, {
       density: 0.0012,
@@ -118,8 +133,8 @@ class CarExampleScene extends Phaser.Scene {
       label: 'right-wheel',
     })
     // Constraints (axles, springs) - attach to bottom of car body with fixed point
-    this.matter.add.constraint(this.carBody, this.leftWheel, 0, 0.32, { pointA: { x: -32, y: 13 } })
-    this.matter.add.constraint(this.carBody, this.rightWheel, 0, 0.32, { pointA: { x: 32, y: 13 } })
+    this.matter.add.constraint(this.carBody, this.leftWheel, 0, 0.5, { pointA: { x: -32, y: 13 } })
+    this.matter.add.constraint(this.carBody, this.rightWheel, 0, 0.5, { pointA: { x: 32, y: 13 } })
 
     // --- DEBUG GRAPHICS for car ---
     const debugGraphics = this.add.graphics()
@@ -139,6 +154,24 @@ class CarExampleScene extends Phaser.Scene {
       debugGraphics.rotation = this.carBody.angle
     })
 
+    // --- ALARM ON CARROOF/ROAD COLLISION ---
+    this.matter.world.on('collisionstart', (event: any) => {
+      if (this.gameOver) return
+      const pairs = event.pairs
+      for (const pair of pairs) {
+        const labels = [pair.bodyA.label, pair.bodyB.label]
+        if (labels.includes('car-roof') && labels.includes('road-segment')) {
+          this.gameOver = true
+          alert('Крыша столкнулась с дорогой!')
+          this.matter.world.pause()
+          if (this.input.keyboard) {
+            this.input.keyboard.enabled = false
+          }
+          break
+        }
+      }
+    })
+
     // ---- CONTROLS ----
     this.cursors = this.input.keyboard!.createCursorKeys()
     this.spaceKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
@@ -153,25 +186,39 @@ class CarExampleScene extends Phaser.Scene {
 
   override update() {
     // Simple car controls: wheels get torque when left/right pressed
+    if (this.gameOver) return
     if (!this.cursors) return
-    const torque = 0.088
+    const torque = 0.18
+    const moveBounds = 0.65
+    const angleTorque = 0.001
+    const angleBounds = 1.5
     if (this.cursors.right.isDown) {
       this.matter.body.setAngularVelocity(
         this.leftWheel,
-        Phaser.Math.Clamp(this.leftWheel.angularVelocity + torque, -0.65, 0.65)
+        Phaser.Math.Clamp(this.leftWheel.angularVelocity + torque, -moveBounds, moveBounds)
       )
       this.matter.body.setAngularVelocity(
         this.rightWheel,
-        Phaser.Math.Clamp(this.rightWheel.angularVelocity + torque, -0.65, 0.65)
+        Phaser.Math.Clamp(this.rightWheel.angularVelocity + torque, -moveBounds, moveBounds)
+      )
+      // Добавляем небольшой импульс наклона влево К ТЕКУЩЕМУ зн.
+      this.matter.body.setAngularVelocity(
+        this.carBody,
+        Phaser.Math.Clamp(this.carBody.angularVelocity - angleTorque, -angleBounds, angleBounds)
       )
     } else if (this.cursors.left.isDown) {
       this.matter.body.setAngularVelocity(
         this.leftWheel,
-        Phaser.Math.Clamp(this.leftWheel.angularVelocity - torque, -0.65, 0.65)
+        Phaser.Math.Clamp(this.leftWheel.angularVelocity - torque, -moveBounds, moveBounds)
       )
       this.matter.body.setAngularVelocity(
         this.rightWheel,
-        Phaser.Math.Clamp(this.rightWheel.angularVelocity - torque, -0.65, 0.65)
+        Phaser.Math.Clamp(this.rightWheel.angularVelocity - torque, -moveBounds, moveBounds)
+      )
+      // Добавляем небольшой импульс наклона вправо К ТЕКУЩЕМУ зн.
+      this.matter.body.setAngularVelocity(
+        this.carBody,
+        Phaser.Math.Clamp(this.carBody.angularVelocity + angleTorque, -angleBounds, angleBounds)
       )
     }
 
