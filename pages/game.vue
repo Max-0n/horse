@@ -35,7 +35,21 @@ const score = computed(() => {
   return Math.floor(passed * 2)
 })
 function restartGame() {
-  window.location.reload()
+  // Скрыть модалку и обнулить прогресс
+  showGameOver.value = false
+  startCarX.value = 0
+  maxCarX.value = 0
+  // Перезапуск сцены Phaser без перезагрузки страницы
+  const scene: any = phaserGame?.scene?.keys?.CarExampleScene
+  if (scene) {
+    scene.scene.restart()
+  }
+    // Повторно включим клавиатуру на уровне игры (на случай, если отключали ранее)
+    if ((phaserGame as any)?.input?.keyboard) {
+      ;(phaserGame as any).input.keyboard.enabled = true
+    }
+  // Вернём музыку
+  appStore.startMusic()
 }
 
 let interval: number | null = null
@@ -76,6 +90,12 @@ class CarExampleScene extends Phaser.Scene {
   }
 
   create() {
+    // Сброс состояния после возможного рестарта
+    this.gameOver = false
+    const matterWorld: any = this.matter.world as any
+    if (matterWorld.isPaused) {
+      matterWorld.resume()
+    }
     // Set up world config
     const { width, height } = this.sys.game.canvas
     const worldWidth = 2400 * 20
@@ -259,6 +279,7 @@ class CarExampleScene extends Phaser.Scene {
     })
 
     // ---- CONTROLS ----
+    if (this.input.keyboard) this.input.keyboard.enabled = true
     this.cursors = this.input.keyboard!.createCursorKeys()
     this.spaceKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 
