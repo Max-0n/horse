@@ -42,13 +42,12 @@ let interval: number | null = null
 
 const GAME_WIDTH = 600
 const aspect = 600 / 400
-const MAX_HEIGHT = 300
 const dynamicWidth = ref(Math.round(window.innerWidth))
-const dynamicHeight = ref(Math.min(Math.round(window.innerWidth / aspect), MAX_HEIGHT))
+const dynamicHeight = ref(Math.round(window.innerHeight * 0.8))
 
 function recalcSize() {
   dynamicWidth.value = window.innerWidth
-  dynamicHeight.value = Math.min(Math.round(dynamicWidth.value / aspect), MAX_HEIGHT)
+  dynamicHeight.value = Math.round(window.innerHeight * 0.8)
 }
 
 window.addEventListener('resize', recalcSize)
@@ -381,7 +380,7 @@ onBeforeUnmount(() => {
   box-shadow: none;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 0;
 }
@@ -389,27 +388,25 @@ onBeforeUnmount(() => {
 .game > canvas {
   width: 100vw !important;
   max-width: 100vw !important;
-  height: auto !important;
-  max-height: 300px !important;
-  aspect-ratio: 3/1;
+  height: 80vh !important;
   display: block;
   position: relative;
   margin: 0 auto;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  transform: none;
 }
 
 @media (orientation: portrait) {
   .game > canvas {
     width: 100vw !important;
-    height: calc(100vw / 1.5) !important;
+    height: 80vh !important;
   }
 }
 
 @media (orientation: landscape) {
   .game > canvas {
     width: 100vw !important;
-    height: calc(100vw / 1.5) !important;
+    height: 80vh !important;
   }
 }
 
