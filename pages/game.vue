@@ -1,12 +1,14 @@
 <template lang="pug">
   .game(ref="gameContainer")
+  .hud
+    .hud-score {{ score }}
   .mobile-controls
     button.control.left(@touchstart="leftHeld = true" @touchend="leftHeld = false" @mousedown="leftHeld = true" @mouseup="leftHeld = false" @mouseleave="leftHeld = false" aria-label="Влево") &#60;
     button.control.right(@touchstart="rightHeld = true" @touchend="rightHeld = false" @mousedown="rightHeld = true" @mouseup="rightHeld = false" @mouseleave="rightHeld = false" aria-label="Вправо") &#62;
   .modal-overlay(v-if="showGameOver")
     .modal-box
       .score-container
-        h3.modal-score 0
+        h3.modal-score {{ score }}
         p.modal-score-text Score
       .modal-title Game Over
       .modal-buttons
@@ -16,7 +18,7 @@
 
 <script lang="ts" setup>
 import Phaser from 'phaser'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, computed } from 'vue'
 import { useAppStore } from '~/stores/appStore'
 
 const gameContainer = ref<HTMLDivElement | null>(null)
@@ -26,6 +28,12 @@ const appStore = useAppStore()
 const leftHeld = ref(false)
 const rightHeld = ref(false)
 const showGameOver = ref(false)
+const maxCarX = ref(0)
+const startCarX = ref(0)
+const score = computed(() => {
+  const passed = Math.max(0, maxCarX.value - startCarX.value)
+  return Math.floor(passed * 2)
+})
 function restartGame() {
   window.location.reload()
 }
@@ -137,6 +145,9 @@ class CarExampleScene extends Phaser.Scene {
       },
       label: 'car-body',
     })
+    // Инициализируем стартовую точку для расчёта очков
+    startCarX.value = this.carBody.position.x
+    maxCarX.value = this.carBody.position.x
     // Rectangle above carBody (physics only, if needed visually, can set isSensor: true)
     this.carRoof = this.matter.add.circle(carX, carY - 22, 14, {
       label: 'car-roof',
@@ -210,6 +221,12 @@ class CarExampleScene extends Phaser.Scene {
       bodySprite.x = this.carBody.position.x
       bodySprite.y = this.carBody.position.y
       bodySprite.rotation = this.carBody.angle
+
+      // Обновляем максимальную достигнутую X-координату (счёт растёт только при движении вперёд)
+      const currentX = this.carBody.position.x
+      if (currentX > maxCarX.value) {
+        maxCarX.value = currentX
+      }
 
       headSprite.x = this.carRoof.position.x
       headSprite.y = this.carRoof.position.y
@@ -442,6 +459,19 @@ onBeforeUnmount(() => {
   background: rgba(109, 109, 109, 0.24);
 }
 
+.hud {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  pointer-events: none;
+}
+.hud-score {
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -468,6 +498,9 @@ onBeforeUnmount(() => {
   font-size: 48px;
   font-weight: 600;
   color: #181818;
+  text-align: center;
+}
+.modal-score-text{
   text-align: center;
 }
 .modal-title {
