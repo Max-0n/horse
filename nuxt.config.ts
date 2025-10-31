@@ -27,15 +27,15 @@ export default defineNuxtConfig({
         { name: 'cleartype', content: 'on' },
         { name: 'HandheldFriendly', content: 'True' },
       ],
-      script: [ { src: 'https://telegram.org/js/telegram-web-app.js', defer: true } ],
+      script: [{ src: 'https://telegram.org/js/telegram-web-app.js', defer: true }],
     },
   },
   build: {
-    transpile: [ '@tonconnect/ui' ],
+    transpile: ['@tonconnect/ui'],
   },
   compatibilityDate: '2024-11-06',
   components: true,
-  css: [ '~/assets/styles/app.scss', 'notivue/notification.css', 'notivue/animations.css' ],
+  css: ['~/assets/styles/app.scss', 'notivue/notification.css', 'notivue/animations.css'],
   devServer: {
     // https: true,
     port: process.env.APP_PORT ? Number.parseInt(process.env.APP_PORT, 10) : 3000,
@@ -56,7 +56,7 @@ export default defineNuxtConfig({
     },
   },
   imports: {
-    dirs: [ './composables/**', './components/**', './types/**', './constants/**' ],
+    dirs: ['./composables/**', './components/**', './types/**', './constants/**'],
   },
   modules: [
     '@nuxt/eslint',
@@ -69,8 +69,8 @@ export default defineNuxtConfig({
         preconnect: true,
         display: 'swap',
         families: {
-          Rubik: [ 300, 400, 500, 600, 700, 800, 900 ],
-          Inter: [ 300, 400, 500, 600, 700, 800, 900 ],
+          Rubik: [300, 400, 500, 600, 700, 800, 900],
+          Inter: [300, 400, 500, 600, 700, 800, 900],
         },
       },
     ],
@@ -118,7 +118,7 @@ export default defineNuxtConfig({
     },
   },
   pinia: {
-    storesDirs: [ './stores/**' ],
+    storesDirs: ['./stores/**'],
   },
   // plugins: ['~/plugins/event-bus.ts', '~/plugins/cdn.ts'],
   runtimeConfig: {
@@ -145,7 +145,7 @@ export default defineNuxtConfig({
   },
   vite: {
     optimizeDeps: {
-      include: [ '@tonconnect/ui' ],
+      include: ['@tonconnect/ui'],
     },
     server: {
       headers: {
@@ -163,6 +163,6 @@ export default defineNuxtConfig({
         '@season2-config/*': path.resolve(__dirname, '../config/src/season2/*'),
       },
     },
-    plugins: [ svgLoader() ],
+    plugins: [svgLoader()],
   },
 })
