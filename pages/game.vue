@@ -3,8 +3,8 @@
   .hud
     .hud-score {{ score }}
   .mobile-controls
-    button.control.left(@touchstart="leftHeld = true" @touchend="leftHeld = false" @mousedown="leftHeld = true" @mouseup="leftHeld = false" @mouseleave="leftHeld = false" aria-label="Влево") &#60;
-    button.control.right(@touchstart="rightHeld = true" @touchend="rightHeld = false" @mousedown="rightHeld = true" @mouseup="rightHeld = false" @mouseleave="rightHeld = false" aria-label="Вправо") &#62;
+    button.control.left(:class="{ pressed: leftHeld }" @touchstart="leftHeld = true" @touchend="leftHeld = false" @mousedown="leftHeld = true" @mouseup="leftHeld = false" @mouseleave="leftHeld = false" aria-label="Влево") &#60;
+    button.control.right(:class="{ pressed: rightHeld }" @touchstart="rightHeld = true" @touchend="rightHeld = false" @mousedown="rightHeld = true" @mouseup="rightHeld = false" @mouseleave="rightHeld = false" aria-label="Вправо") &#62;
   .modal-overlay(v-if="showGameOver")
     .modal-box
       .score-container
@@ -27,6 +27,29 @@ const appStore = useAppStore()
 
 const leftHeld = ref(false)
 const rightHeld = ref(false)
+
+function onArrowKeyDown(e: KeyboardEvent) {
+  if (e.code === 'ArrowLeft') {
+    e.preventDefault()
+    leftHeld.value = true
+  } else if (e.code === 'ArrowRight') {
+    e.preventDefault()
+    rightHeld.value = true
+  }
+}
+function onArrowKeyUp(e: KeyboardEvent) {
+  if (e.code === 'ArrowLeft') {
+    e.preventDefault()
+    leftHeld.value = false
+  } else if (e.code === 'ArrowRight') {
+    e.preventDefault()
+    rightHeld.value = false
+  }
+}
+function onWindowBlur() {
+  leftHeld.value = false
+  rightHeld.value = false
+}
 const showGameOver = ref(false)
 const maxCarX = ref(0)
 const startCarX = ref(0)
@@ -37,6 +60,8 @@ const score = computed(() => {
 function restartGame() {
   // Скрыть модалку и обнулить прогресс
   showGameOver.value = false
+  leftHeld.value = false
+  rightHeld.value = false
   startCarX.value = 0
   maxCarX.value = 0
   // Перезапуск сцены Phaser без перезагрузки страницы
@@ -372,8 +397,11 @@ onBeforeUnmount(() => {
   }
 })
 
-// Эмулируем нажатие стрелки, если зажата кнопка на экране
+// Эмулируем нажатие стрелки: кнопки на экране и клавиши ←/→
 onMounted(() => {
+  window.addEventListener('keydown', onArrowKeyDown)
+  window.addEventListener('keyup', onArrowKeyUp)
+  window.addEventListener('blur', onWindowBlur)
   interval = window.setInterval(() => {
     if (phaserGame?.scene) {
       const scene: any = phaserGame.scene.keys.CarExampleScene
@@ -385,6 +413,9 @@ onMounted(() => {
   }, 16)
 })
 onBeforeUnmount(() => {
+  window.removeEventListener('keydown', onArrowKeyDown)
+  window.removeEventListener('keyup', onArrowKeyUp)
+  window.removeEventListener('blur', onWindowBlur)
   if (interval) clearInterval(interval)
 })
 </script>
@@ -473,7 +504,8 @@ onBeforeUnmount(() => {
   -webkit-user-select: none;
 }
 
-.mobile-controls button.control:active {
+.mobile-controls button.control:active,
+.mobile-controls button.control.pressed {
   background: rgba(109, 109, 109, 0.24);
 }
 
