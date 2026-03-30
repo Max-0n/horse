@@ -3,9 +3,29 @@
 import path from 'node:path'
 import svgLoader from 'vite-svg-loader'
 
-/** GitHub Pages project site: `NUXT_APP_BASE_URL=/repo-name/` (leading/trailing slashes optional). Root site: `/` */
-const pagesBase = process.env.NUXT_APP_BASE_URL || '/'
-const appBaseURL = pagesBase === '/' ? '/' : `/${pagesBase.replace(/^\/|\/$/g, '')}/`
+/**
+ * GitHub Pages: project sites live at `/{repo}/`, so Vue/Nuxt assets must use that base.
+ * - Local deploy: `NUXT_APP_BASE_URL=/my-repo/ bun run generate`
+ * - GitHub Actions: `GITHUB_REPOSITORY` is set → base is `/{repo}/` automatically
+ * - User/org page repo `*.github.io` is served at `/` → base `/`
+ */
+function resolveAppBaseURL(): string {
+  const explicit = process.env.NUXT_APP_BASE_URL?.trim()
+  if (explicit) {
+    if (explicit === '/') return '/'
+    const slug = explicit.replace(/^\/|\/$/g, '')
+    return slug ? `/${slug}/` : '/'
+  }
+  const gh = process.env.GITHUB_REPOSITORY
+  if (gh) {
+    const repo = gh.split('/')[1]
+    if (repo?.endsWith('.github.io')) return '/'
+    if (repo) return `/${repo}/`
+  }
+  return '/'
+}
+
+const appBaseURL = resolveAppBaseURL()
 
 export default defineNuxtConfig({
   alias: {
