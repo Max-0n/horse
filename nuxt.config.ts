@@ -3,6 +3,10 @@
 import path from 'node:path'
 import svgLoader from 'vite-svg-loader'
 
+/** GitHub Pages project site: `NUXT_APP_BASE_URL=/repo-name/` (leading/trailing slashes optional). Root site: `/` */
+const pagesBase = process.env.NUXT_APP_BASE_URL || '/'
+const appBaseURL = pagesBase === '/' ? '/' : `/${pagesBase.replace(/^\/|\/$/g, '')}/`
+
 export default defineNuxtConfig({
   alias: {
     '@cdn': path.resolve(__dirname, '../cdn/src/CDN'),
@@ -13,6 +17,7 @@ export default defineNuxtConfig({
     '@season2-config/*': path.resolve(__dirname, '../config/src/season2/*'),
   },
   app: {
+    baseURL: appBaseURL,
     head: {
       title: 'Horse Defied',
       meta: [
@@ -57,6 +62,12 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: ['./composables/**', './components/**', './types/**', './constants/**'],
+  },
+  nitro: {
+    output: {
+      /** Static export for GitHub Pages (Settings → Pages → branch /docs) */
+      publicDir: path.resolve(__dirname, 'docs'),
+    },
   },
   modules: [
     '@nuxt/eslint',
