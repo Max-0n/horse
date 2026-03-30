@@ -2,12 +2,13 @@
   .game-container(:class="layoutDirection" ref="containerRef")
     .logo-title-container
       h1.game-title Horse Defied
-      img(src="/images/game_logo.png" alt="Horse Defied").game-logo
+      img(:src="publicAssetPath('/images/game_logo.png')" alt="Horse Defied").game-logo
     NuxtLink(to="/game").game-start START
 </template>
 
 <script lang="ts" setup>
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { publicAssetPath } from '~/composables/publicAssetPath'
 
 const containerRef = ref<HTMLElement | null>(null)
 const layoutDirection = ref<'column' | 'row'>('column')

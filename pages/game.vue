@@ -19,6 +19,7 @@
 <script lang="ts" setup>
 import Phaser from 'phaser'
 import { onBeforeUnmount, onMounted, ref, computed } from 'vue'
+import { publicAssetPath } from '~/composables/publicAssetPath'
 import { useAppStore } from '~/stores/appStore'
 
 const gameContainer = ref<HTMLDivElement | null>(null)
@@ -109,9 +110,9 @@ class CarExampleScene extends Phaser.Scene {
   }
 
   preload() {
-    // загружаем текстуру кузова вместо debug
-    this.load.image('horse-body', '/images/horse_body.png')
-    this.load.image('horse-head', '/images/horse_head.png')
+    // загружаем текстуру кузова вместо debug (пути с baseURL для GitHub Pages)
+    this.load.image('horse-body', publicAssetPath('/images/horse_body.png'))
+    this.load.image('horse-head', publicAssetPath('/images/horse_head.png'))
   }
 
   create() {
